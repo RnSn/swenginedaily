@@ -2,13 +2,21 @@ package ua.ro.swenginedaily
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import java.nio.file.Paths
 
 val BASE_URL = "http://softwareengineeringdaily.com/"
 
 fun main(args: Array<String>) {
+    val dest = if (args.size > 0) {
+        args[0]
+    } else {
+        "c:/1"
+    }
 
     for (i in 1..lastPage()) {
-        println(Page(BASE_URL + "page/" + i).titles())
+        Page(BASE_URL + "page/" + i).title_links().forEach { entry ->
+            Podcast(entry.key, entry.value, Paths.get(dest))
+        }
     }
 }
 

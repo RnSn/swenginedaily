@@ -7,25 +7,31 @@ import java.util.*
 
 class Page constructor(link: String) {
 
-    val in_format = SimpleDateFormat("yyyy/MM/dd")
-    val out_format = SimpleDateFormat("yyyy.MM.dd_")
+    private val in_format = SimpleDateFormat("yyyy/MM/dd")
+    private val out_format = SimpleDateFormat("yyyy.MM.dd_")
 
     private val page: Document? = Jsoup.connect(link)
             .userAgent("Mozilla").get()
 
-    fun titles(): List<String> {
-        if (page == null) {
-            return Collections.emptyList()
-        }
-        val titles = page.getElementsByAttributeValue("class", "post-title")
+    private val attr_class = "class"
 
-        return titles.map {
-            val anchor = it.allElements.last()
+    fun title_links(): Map<String, String> {
+        if (page == null) {
+            return Collections.emptyMap()
+        }
+
+
+        val titles = page.getElementsByAttributeValue(attr_class, "post-title")
+        val links = page.getElementsByAttributeValue(attr_class, "powerpress_link_d")
+
+        val title_links = HashMap<String, String>()
+        titles.forEachIndexed { index, element ->
+            val anchor = element.allElements.last()
             val date = in_format.parse(anchor.attr("href").replaceFirst(BASE_URL, ""))
-            "${out_format.format(date)}${anchor.text().replace(" ", "_")}"
-        }.toList()
+            title_links["${out_format.format(date)}${anchor.text().replace(" ", "_")}"] =
+                    links[index].attr("href")
+        }
+
+        return title_links
     }
 }
-
-
-
