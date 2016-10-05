@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 
     for (i in 1..lastPage()) {
         Page(BASE_URL + "page/" + i).title_links().forEach { entry ->
-            Podcast(entry.key, entry.value, Paths.get(dest))
+            Podcast(entry.key, entry.value, Paths.get(dest)).dl()
         }
     }
 }
