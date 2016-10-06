@@ -29,10 +29,18 @@ class Page constructor(link: String) {
         titles.forEachIndexed { index, element ->
             val anchor = element.allElements.last()
             val date = in_format.parse(anchor.attr(attr_href).replaceFirst(BASE_URL, ""))
-            val normalized_text = anchor.text().replace(" ", "_").replace(":", "")
-            title_links["${out_format.format(date)}$normalized_text"] = links[index].attr(attr_href)
+            val normalized_text = normalize(anchor.text())
+            if (index >= links.size) {
+                println("No link for $normalized_text. Skipping...")
+            } else {
+                title_links["${out_format.format(date)}$normalized_text"] = links[index].attr(attr_href)
+            }
         }
 
         return title_links
+    }
+
+    private fun normalize(text: String): String {
+        return text.replace(" ", "_").replace(":", "").replace("?", "")
     }
 }

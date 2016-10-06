@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     val dest = if (args.size > 0) {
         args[0]
     } else {
-        "c:/1"
+        "d:/AUDIO_VIDEO/softwareengineeringdaily"
     }
 
     for (i in 1..lastPage()) {
