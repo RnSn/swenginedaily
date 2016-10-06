@@ -14,6 +14,7 @@ class Page constructor(link: String) {
             .userAgent("Mozilla").get()
 
     private val attr_class = "class"
+    private val attr_href = "href"
 
     fun title_links(): Map<String, String> {
         if (page == null) {
@@ -27,9 +28,9 @@ class Page constructor(link: String) {
         val title_links = HashMap<String, String>()
         titles.forEachIndexed { index, element ->
             val anchor = element.allElements.last()
-            val date = in_format.parse(anchor.attr("href").replaceFirst(BASE_URL, ""))
+            val date = in_format.parse(anchor.attr(attr_href).replaceFirst(BASE_URL, ""))
             title_links["${out_format.format(date)}${anchor.text().replace(" ", "_")}"] =
-                    links[index].attr("href")
+                    links[index].attr(attr_href)
         }
 
         return title_links

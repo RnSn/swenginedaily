@@ -14,7 +14,9 @@ fun main(args: Array<String>) {
     }
 
     for (i in 1..lastPage()) {
-        Page(BASE_URL + "page/" + i).title_links().forEach { entry ->
+        val title_links = Page(BASE_URL + "page/" + i).title_links()
+        println("Processing page #$i with ${title_links.size} podcasts")
+        title_links.forEach { entry ->
             Podcast(entry.key, entry.value, Paths.get(dest)).dl()
         }
     }
@@ -22,7 +24,6 @@ fun main(args: Array<String>) {
 
 private fun lastPage(): Int {
     val page: Document? = Jsoup.connect(BASE_URL).userAgent("Mozilla").get()
-
     val pageNumbers = page!!.getElementsByAttributeValue("class", "page-numbers")
     return pageNumbers.last().text().toInt()
 }

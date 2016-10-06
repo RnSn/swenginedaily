@@ -25,7 +25,6 @@ class Podcast(val title: String, val link: String, val dest: Path) {
             val website = URL(link)
             Channels.newChannel(website.openStream()).use({ rbc ->
                 FileOutputStream(target.toFile()).use({ fos ->
-
                     var transfered: Long
                     var total: Long = 0
                     transfered = fos.channel.transferFrom(rbc, total, TRANSFTER_COUNT_MB)
