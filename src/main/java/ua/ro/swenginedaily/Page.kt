@@ -29,8 +29,8 @@ class Page constructor(link: String) {
         titles.forEachIndexed { index, element ->
             val anchor = element.allElements.last()
             val date = in_format.parse(anchor.attr(attr_href).replaceFirst(BASE_URL, ""))
-            title_links["${out_format.format(date)}${anchor.text().replace(" ", "_")}"] =
-                    links[index].attr(attr_href)
+            val normalized_text = anchor.text().replace(" ", "_").replace(":", "")
+            title_links["${out_format.format(date)}$normalized_text"] = links[index].attr(attr_href)
         }
 
         return title_links
